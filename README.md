@@ -31,7 +31,7 @@ A powerful GUI application for automatically configuring Linux servers for centr
 
 ### 🚀 Ready-to-Use Executable (Windows)
 Download the latest version:
-- **[NewAutoLog.exe](https://github.com/YOUR_USERNAME/ssh-auto-config/releases/latest/download/NewAutoLog.exe)** (Windows 64-bit)
+- **[NewAutoLog.exe](https://github.com/ssprata/ssh-auto-config/releases/latest/download/NewAutoLog.exe)** (Windows 64-bit)
 
 *No Python installation required! Just download and run.*
 
@@ -71,7 +71,7 @@ These scripts can be customized for different requirements.
 ### Running from Source
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/ssh-auto-config.git
+git clone https://github.com/ssprata/ssh-auto-config.git
 cd ssh-auto-config
 
 # Install dependencies
@@ -121,9 +121,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 If you encounter any issues or have questions:
-- 🐛 [Report bugs](https://github.com/YOUR_USERNAME/ssh-auto-config/issues)
-- 💡 [Request features](https://github.com/YOUR_USERNAME/ssh-auto-config/issues)
-- 📖 Check the [Wiki](https://github.com/YOUR_USERNAME/ssh-auto-config/wiki)
+- 🐛 [Report bugs](https://github.com/ssprata/ssh-auto-config/issues)
+- 💡 [Request features](https://github.com/ssprata/ssh-auto-config/issues)
+- 📖 Check the [Wiki](https://github.com/ssprata/ssh-auto-config/wiki)
 
 ## Changelog
 
