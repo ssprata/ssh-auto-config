@@ -1,0 +1,134 @@
+# SSH Auto Configuration Tool
+
+A powerful GUI application for automatically configuring Linux servers for centralized logging via SSH.
+
+## Features
+
+- **🔐 SSH Connection**: Connect to remote Linux servers with SSH
+- **📋 Auto Configuration**: Configure rsyslog, Apache, and MySQL with one click
+- **📊 Real-time Output**: View command execution in real-time terminal
+- **🛡️ Privilege Management**: Automatic sudo detection and handling
+- **📁 Script-based**: Uses customizable bash scripts for configurations
+- **🖥️ User-friendly GUI**: Intuitive interface with progress indicators
+
+## What It Configures
+
+### 1. **rsyslog Configuration**
+- Installs and configures rsyslog service
+- Sets up remote log forwarding to your log server
+
+### 2. **Apache Configuration** 
+- Installs Apache2 web server
+- Configures error and access logs to forward via syslog
+- Tests Apache functionality
+
+### 3. **MySQL Configuration**
+- Installs MySQL server
+- Configures error, general, and slow query logs
+- Sets up rsyslog monitoring for MySQL logs
+
+## Download
+
+### 🚀 Ready-to-Use Executable (Windows)
+Download the latest version:
+- **[NewAutoLog.exe](https://github.com/YOUR_USERNAME/ssh-auto-config/releases/latest/download/NewAutoLog.exe)** (Windows 64-bit)
+
+*No Python installation required! Just download and run.*
+
+### 📋 Requirements for Executable
+- Windows 7/8/10/11 (64-bit)
+- Network access to target Linux servers
+- SSH credentials for target servers
+
+## Usage
+
+1. **Launch the application** (NewAutoLog.exe)
+2. **Enter connection details**:
+   - Root User (default: root)
+   - IP Address of target server
+   - SSH Port (default: 22)
+   - Password
+3. **Enter your log server IP** in the "Server IP" field
+4. **Connect** to the target server
+5. **Click configuration buttons**:
+   - "Configure rsyslog" - Basic system logging
+   - "Configure MySQL" - Database logging  
+   - "Configure Apache" - Web server logging
+6. **Monitor progress** in the terminal output area
+
+## Configuration Scripts
+
+The application uses three bash scripts located in `Bash Files/`:
+
+- `configurar_rsyslog.sh` - System logging configuration
+- `configurar_apache_logs.sh` - Apache web server logging
+- `configurar_mysql_logs.sh` - MySQL database logging
+
+These scripts can be customized for different requirements.
+
+## Development
+
+### Running from Source
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/ssh-auto-config.git
+cd ssh-auto-config
+
+# Install dependencies
+pip install paramiko
+
+# Run the application
+python NewAutoLog.py
+```
+
+### Building Executable
+```bash
+# Install PyInstaller
+pip install pyinstaller
+
+# Build executable
+pyinstaller --onefile --windowed --add-data "Bash Files;Bash Files" NewAutoLog.py
+```
+
+## Technical Details
+
+- **Language**: Python 3.x
+- **GUI Framework**: Tkinter
+- **SSH Library**: Paramiko
+- **Packaging**: PyInstaller
+- **Platform**: Windows (executable), Cross-platform (source)
+
+## Screenshots
+
+### Main Interface
+![Main Interface](screenshots/main-interface.png)
+
+### Configuration in Progress
+![Configuration Progress](screenshots/configuration-progress.png)
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Support
+
+If you encounter any issues or have questions:
+- 🐛 [Report bugs](https://github.com/YOUR_USERNAME/ssh-auto-config/issues)
+- 💡 [Request features](https://github.com/YOUR_USERNAME/ssh-auto-config/issues)
+- 📖 Check the [Wiki](https://github.com/YOUR_USERNAME/ssh-auto-config/wiki)
+
+## Changelog
+
+### v1.0.0
+- Initial release
+- SSH connection management
+- rsyslog, Apache, and MySQL configuration
+- Windows executable distribution
