@@ -31,7 +31,7 @@ A powerful GUI application for automatically configuring Linux servers for centr
 
 ### 🚀 Ready-to-Use Executable (Windows)
 Download the latest version:
-- **[NewAutoLog.exe](https://github.com/ssprata/ssh-auto-config/releases/latest/download/NewAutoLog.exe)** (Windows 64-bit)
+- **[NewAutoLog.exe](https://github.com/ssprata/ssh-auto-config/releases/tag/v1.0.0)** (Windows 64-bit)
 
 *No Python installation required! Just download and run.*
 
