@@ -96,7 +96,7 @@ pyinstaller --onefile --windowed --add-data "Bash Files;Bash Files" NewAutoLog.p
 - **GUI Framework**: Tkinter
 - **SSH Library**: Paramiko
 - **Packaging**: PyInstaller
-- **Platform**: Windows (executable), Cross-platform (source)
+- **Platform**: Windows (executable)
 
 ## Screenshots
 

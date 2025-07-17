@@ -188,7 +188,7 @@ class SSHConnectionGUI:
             messagebox.showerror("Error", "Please enter the server IP.")
             return
 
-        with open(full_script_path, "r") as script_file:
+        with open(full_script_path, "r", encoding="utf-8") as script_file:
             script_content = script_file.read()
 
         # Replace variable with actual server IP
@@ -214,8 +214,8 @@ class SSHConnectionGUI:
                 not line == '#!/bin/bash'):
                 
                 # Handle compound commands with && or ||
-                if '&&' in line or '||' in line:
-                    # Split compound commands but keep error handling
+                if ('&&' in line or '||' in line) and not ('2>' in line or '1>' in line or '&>' in line):
+                    # Only split if it's not output redirection
                     if '||' in line and '{' not in line:
                         # Simple command with error handling
                         main_cmd = line.split('||')[0].strip()
@@ -233,6 +233,7 @@ class SSHConnectionGUI:
                     else:
                         commands.append(line)
                 else:
+                    # Keep the full command intact if it contains redirection or no operators
                     commands.append(line)
 
         # Execute each command
@@ -250,8 +251,11 @@ class SSHConnectionGUI:
                     any(cmd in command for cmd in ['apt-get', 'systemctl', 'cp /etc/', 'echo', '>>', 'sed', 'mkdir', 'mv /tmp/', 'logger']) and
                     not command.startswith('sudo')):
                     
-                    if '>>' in command:
-                        # Handle file redirection with sudo
+                    # Check if this is output redirection (like 2>/dev/null) vs file redirection
+                    is_output_redirection = any(redirect in command for redirect in ['2>', '1>', '&>'])
+                    
+                    if '>>' in command and not is_output_redirection:
+                        # Handle file redirection with sudo (but not output redirection)
                         parts = command.split('>>')
                         if len(parts) == 2:
                             echo_part = parts[0].strip()
@@ -259,8 +263,8 @@ class SSHConnectionGUI:
                             # Properly escape quotes in echo commands
                             echo_part = echo_part.replace('"', '\\"')
                             command = f"echo '{self.ssh_password}' | sudo -S sh -c \"{echo_part} >> {file_part}\""
-                    elif '>' in command and not '>>' in command:
-                        # Handle file redirection with sudo
+                    elif '>' in command and not '>>' in command and not is_output_redirection:
+                        # Handle file redirection with sudo (but not output redirection)
                         parts = command.split('>')
                         if len(parts) == 2:
                             echo_part = parts[0].strip()
@@ -269,6 +273,7 @@ class SSHConnectionGUI:
                             echo_part = echo_part.replace('"', '\\"')
                             command = f"echo '{self.ssh_password}' | sudo -S sh -c \"{echo_part} > {file_part}\""
                     else:
+                        # Regular command with sudo (including commands with output redirection)
                         command = f"echo '{self.ssh_password}' | sudo -S {command}"
                 
                 # Show detailed output only if checkbox is checked
@@ -278,7 +283,9 @@ class SSHConnectionGUI:
                     self.root.update_idletasks()
                 
                 try:
-                    stdin, stdout, stderr = self.ssh_client.exec_command(command, timeout=30)
+                    # Use longer timeout for package operations and MySQL
+                    timeout = 120 if any(pkg_cmd in command for pkg_cmd in ['apt-get', 'dpkg', 'mysql']) else 60
+                    stdin, stdout, stderr = self.ssh_client.exec_command(command, timeout=timeout)
                     output = stdout.read().decode()
                     error = stderr.read().decode()
                     
@@ -286,11 +293,26 @@ class SSHConnectionGUI:
                         if output:
                             self.terminal_text.insert(tk.END, output + "\n")
                         if error and "sudo:" not in error:  # Hide sudo password prompts
-                            self.terminal_text.insert(tk.END, f"Error: {error}\n")
+                            # Filter out common non-critical MySQL and dpkg warnings
+                            if not any(warning in error.lower() for warning in [
+                                "warning:", "note:", "debconf:", "no apport report", 
+                                "followup error", "sub-process /usr/bin/dpkg returned an error code (1)"
+                            ]):
+                                self.terminal_text.insert(tk.END, f"Error: {error}\n")
                     else:
-                        # Show only errors in simple mode
-                        if error and "sudo:" not in error and "failed" in error.lower():
-                            self.terminal_text.insert(tk.END, f"Error: {error}\n")
+                        # Show only critical errors in simple mode
+                        if error and "sudo:" not in error:
+                            # Skip known non-critical messages but show real failures
+                            critical_errors = ["permission denied", "command not found", "no such file"]
+                            skip_errors = [
+                                "warning:", "note:", "debconf:", "unit 2.service not loaded",
+                                "no apport report", "followup error", "sub-process /usr/bin/dpkg returned an error code (1)",
+                                "error 2002", "can't connect to local mysql server"
+                            ]
+                            
+                            if any(critical in error.lower() for critical in critical_errors):
+                                if not any(skip in error.lower() for skip in skip_errors):
+                                    self.terminal_text.insert(tk.END, f"Error: {error}\n")
                         
                 except Exception as e:
                     self.terminal_text.insert(tk.END, f"Error executing command: {e}\n")
