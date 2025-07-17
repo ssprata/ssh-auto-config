@@ -101,10 +101,13 @@ pyinstaller --onefile --windowed --add-data "Bash Files;Bash Files" NewAutoLog.p
 ## Screenshots
 
 ### Main Interface
-![Main Interface](screenshots/main-interface.png)
+<img width="332" height="304" alt="image" src="https://github.com/user-attachments/assets/88f09c89-72f1-4268-8d48-42e6ee8e6960" />
+
 
 ### Configuration in Progress
-![Configuration Progress](screenshots/configuration-progress.png)
+<img width="324" height="166" alt="image" src="https://github.com/user-attachments/assets/33642d29-0745-4502-abbf-f055925355ad" /> <img width="324" height="166" alt="image" src="https://github.com/user-attachments/assets/42ccd5cc-a6b8-41e5-8ee9-8465bd9ac195" />
+
+
 
 ## Contributing
 
