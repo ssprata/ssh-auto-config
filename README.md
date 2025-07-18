@@ -125,6 +125,9 @@ If you encounter any issues or have questions:
 
 ## Changelog
 
+### v1.5.0
+- MySql Errors Fix
+
 ### v1.0.0
 - Initial release
 - SSH connection management
